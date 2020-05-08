@@ -21,250 +21,142 @@
 
 class: center, middle
 
-# FP for Mortals
-Day1: Typeclasses
+# Serverless (Faas) vs MicroServices (Serveralways)
 
 ---
 
 # Agenda
 
-1. What is Functional Programming(FP)?
-2. Functional Programming Concepts -- RT
-3. Pure Function
-4. Functional Programming vs Object Oriented Programming
-5. Polymorphism
-6. Typeclasses
-7. Typeclasses in Scala
-8. Anatomy of a Typeclass
-9. Summary
-10. Cats Show + Eq
+1. What is Serverless Computing(FaaS)?
+2. Serverless Impacts 
+3. Pure Functions
+4. Faas Framework Options   
+5. Key aspects from Dev/App Perspective 
+6. Key aspects from Ops Perspective 
+7. What is MicroServices Architecture
+8. Compare and Contrast
+9. Compare and Contrast (cont)
+10. Summary
 ---
 
-# What is Functional Programming(FP)?
-*A style of programming which aims to avoid side-effects by using, as much as possible,
-pure functions that manipulate immutable data*<br>
+# What is Serverless Computing (FaaS)?
+The phrase “serverless” doesn’t mean servers are no longer involved. It simply means that developers no longer have to think that much about them. -- Ken Fromm
+*Building and Running Applications that do not require server management, and instead run on ephemeral containers *<br>
 <br>
-* **Side Effects**
- * Interaction with real world -- Logging, Printing, Inputs and Outputs etc.
- * Lack of Referential Transparency (RT)
-* **Pure Functions and Purity rules**
-  * Determinism -- Pure functions will always return the same output when given the same input
-
-  ```scala
-  def add(a: Int, b; Int): Int vs def rand(a: Int): Int
-  Unit
- ```
-  * Totality    -- Pure functions from type A => B have to be defined for every value of its domain (A)
-
-  ```scala
-   def divide(a: Int, b: Int): Int = a/b
-   def divide(a: Int, b: Int): Option[Int] = Try(a/b).toOption
-   ```
-
+* **Deployment Model**
+ * Applications that are bundled as one or more functions are uploaded to a platform
+ * Functions are executed and billed in response to the exact demand needed at the moment
+* **Server Architecture**
+  * No need for 'always' on server system
+  * The PaaS starts the instances in 20ms and run for short bursts to satisfy requests and then perish  
+  
 ---
 
-# Functional Programming Concepts
+# Serverless Impacts 
 
-  * Pure Functions and Purity Rules (cont)
-   * Referential Transparency(RT) -- Pure function calls should be replacable by their results without
-  alterting the meaning of the program
-  **An expression can be replaced by its value without changing the behavior of a program**
-  ```scala
-   def launchBomb: Unit = ???
-   def formatString(s: String): String = {
-    launchBomb
-    s.toUpperCase
-   }
-```
-  * What RT gives you?
-   * Maintainable Code
+  * Application Impact 
+   * Architecture design needs to designed to be ephemeral
+      * stateless services, distributed caches
+      * no long running services
+   * Application code needs to emulate the platform as a service pattern
+ 
+  * Operations Impact: Infra Abstraction 
+   * Elastic --> Autoscale and No host config
+   * On demand --> Boot in 20ms
+   * Pay as you go --> fine grained pay-per-use on cloud as in per-call costs
+   * Automatic spin down   
+      
+  **These are typically always cloud managed services aka NoOps**
+   * What Faas gives you?
+   * Pure functions triggered on demand
+   * Dynamic scalability -- more calls, more instances   
    * Behavior is explicit and expected
    * Refactoring is less painful
-   * Local Reasoning (Equational Reasoning) is possible
+   * IaaC abilities -- no more per app infra architectures
+     
 ---
 
 # Pure Function
 <img src="https://i.imgur.com/UHZmjKl.png" width="800">
 
 ---
+      
+# Faas Framework 
+* All major cloud providers have products
+  * AWS, GCP, Azure, OVH   
 
-# FP vs OOP(s)
-FP approach when it comes to the relationship between data and behavior
-Aim is to completely separate data from behavior
-* Define types (ADT) on one side that exposes no behavior and only holds data
-* Define functions that take values of some of these types as inputs, acting on them and
-outputting values of some of those types (leaving the input values unchanged -- immutability)
-
-OOP approach is to combine data and behavior by creating classes that
-* Store data(attributes) as an internal state
-* Define end expose methods that act on it and may mutate it
-
+* Alternatively you can deploy your own Faas framework
+  * OpenWhisk, OpenFaaS, OracleFN, Gestalt, Nuclio
+      
+* You can leverage on existing CaaS and out value on top of it
+  * Container encapsulation of the function, k8s orchestration    
 
 ---
 
-# Polymorphism
-Increase code re-use by using more generic code.
-There are 3 different kinds of polymorphism
-1. **Subtyping aka subtype polymorphism**<br>
-   Within one type, you have a subset of values making another type
+# Serverless Key Aspects from a Dev/App Perspective
+Devs gain a greater produtivity by focusing on business valuable code.
+Devs get to design applications with pure functions in mind      
 
-2. **Parametric Polymorphism aka Generics**<br>
-   **List[String]** should behave the same as **List[Int]**.  Type Parameters let us define a whole implementation
-   where instead of a type we put a placeholder and when we supplement it with a concrete type, the
-   implementation is materialized.  Mathematical way of looking at it -- A Type constructor could be **List[_]** which takes a parameter like say **String** and then
-   returns a concrete type e.g. **List[String]**
+1. **Serverless is an architecture trend**<br>
+   
+2. **A Serverless application is a mashup of value-added managed services**<br>
+   
+3. **Fits modern arhcitecture stakes**<br>
+Cloud Native applications, 12 factors...
+---
 
-3. **Ad-hoc polymorphism aka operator overloading**<br>
-You have * (or +) operator and you want to be able to use if for multiplying: ints, longs, doubles, floats, complex numbers, vectors, matrices… For each type it would have a slightly different implementation, so you cannot just create one function that rules them all, and simply adjust the type (as is the case with parametric polymorphism), nor extract common behavior (what matrices multiplication has in common with multiplying scalars?).
+# Serverless Key Aspects from an Ops Perspective
+Ops gets more efficiency
+Ops gets to offload serveral concerns to platform      
+
+1. **Autoscale and resilient by design**<br>
+   
+2. **Almost NoOps**<br>
+   
+3. **Fits Cloud Promise**<br>
+On Demand, Elastic, Pay-per-use
+---
+      
+# MicroService Architecture
+Microservice architecture is a set of self-sustained small services, 
+running on their own machines using lightweight mechanisms (usually REST APIs’) 
+to allow inter-module communication of the underlying application.      
 
 ---
 
-# Typeclasses
-The Solution described in the paper [How to make ad-hoc polymorphism less
-ad-hoc](http://homepages.inf.ed.ac.uk/wadler/topics/type-classes.html) works as follows
-* Let us define a named contract.  This contract would require, that for a type certain functions would
-have to be defined and meet certain assertions
-* When type declared itself as following the said contract, then somewhere in the **scope** of the program
-required functions have to be defined and explicitly pointed to
-* operators have assigned contracts, and are used as syntactic sugar for functions mentioned in their contracts
-* on contract can inherit obligations from another contract and add to them
+# Compare and Contrast
+Pricing is the first differentiator. 
+Serverless is pay-as-you-go, making it an attractive option for applications with infrequent requests. 
+It also reduces operational costs as infrastructure and virtual machines are handled by a service provider
+rather than directly on-premise, IaaS or PaaS.
 
-Such contracts would be named **type classes**.
+Scalability is also outstanding on serverless architecture – 
+by its nature it can handle spike loads more easily and can be automatically managed quickly and transparently.
+The only caveat is the maximum number of requests that can be processed making it unsuitable for high load systems.      
 
 ---
 
-# Typeclasses in Scala
-Odersky found an idea of type classes appealing and wanted to have them in Scala.  He chose the following choices:
+# Compare and Contrast (cont)
+Serverless is more granular than microservices, and provides a much higher degree of functionality. 
+On the flip-side, that also creates much more complexity. It also has a number of other restrictions, 
+such as a limited number of requests and operation duration, and supports fewer programming languages.
 
-* type classes with be implemented as actual classes. Or trait. This way you will have to guarantee,
-* wherever you use a type class, you will call a method on an actual instance which will store all necessary information about types inside,
-* the fact that you call this code from type-erased generic implementation that could have been compiler somewhere else won’t be an issue, because you will use dependency injection to get it.
-
-Thing is, usually, you want to have only one type class for each type in the scope. Additionally, such usage would
-introduce clumsiness the original solution hasn’t. Therefore the idea of implicits was born. **Originally, implicits
-were introduced as a way of automatically passing type classes where needed basing solely on their type.**
-
-**FP Tools and Abstractions are exclusively delivered via Typeclasses**
-
----
-
-# Anatomy of a Typeclass (I)
-There are three main important components to a typeclass pattern
-1. **Typeclass**<br>
-The typeclass is an interface/contract/api that represents some functionality we want to implement.  In Cats/Scalaz its
-represented by a ***trait*** with at least one type parameter<br>
-
-```scala
-// Define a very simple Json ADT
-sealed trait Json
-final case class JsObject(get: Map[String, Json]) extends Json
-final case class JsString(get: String) extends Json
-final case class JsNumber(get: Double) extends Json
-final case object JsNull extends Json
-
-// The serialize to Json behavior is encoded in this typeclass
-trait JsonWriter[A] {
- def write(value: A): Json
-}
-```
-
----
-
-# Anatomy of a Typeclass (II)
-The ** Instances** of the typeclass provide implementations for the types we care about especially the types from our domain
-model
-```scala
-// Domain model
-final case class Person(name: String, age: Int, email: String)
-
-// Instances of the type class
-object JsonWriterIntances {
- implicit val stringWriter: JsonWriter[String] =
-  new JsonWriter[String] {
-   def write(value: String): Json =
-    JsString(value)https://i.imgur.com/8L0BuEx.png
-  }
-
-  implicit val personWriter: JsonWriter[Person] =
-   new JsonWriter[Person] {
-    def write(value: Person): Json =
-     JsObject(Map(
-      "name"  -> JsString(value.name),
-      "age"   -> JsNumber(value.age),
-      "email" -> JsString(value.email)
-      ))
-    }
-}
-```
-
----
-
-# Anatomy of a Typeclass (III)
-The **Interface** of the typeclass is any functionality we expose to users.  Interfaces are generic methods that accept
-instances of the type class as implicit parameters.  There are 2 common ways of specifying an interface: ***Interface
-Objects*** and ***Interface Syntax***
-
-**Interface Objects**<br>
-
-```scala
-object Json {
- def toJson[A](value: A)(implicit w: JsonWriter[A]): Json =
-  w.write(value)
-}
-Json.toJson(Person("John", 21, "john@john.com"))
-```
-
-**Interface Syntax**<br>
-
-```scala
-object JsonSyntax {
- implicit class JsonWriterOps[A](value: A) {
-  def toJson(implicit w: JsonWriter[A]): Json =
-   w.write(value)
-  }
-}
-Person("John", 21, "john@john.com").toJson
-```
+The level of granularity you get with serverless can also affect tooling and frameworks. 
+This is because the higher the granularity, the more complicated integration testing becomes, 
+making it more difficult to debug, troubleshoot and test.
 
 ---
 
 # Summary
+Although microservices still provides a solid approach to service oriented architecture (SOA), 
+serverless is gaining ground in event-based architecture and clearly has advantages in terms of 
+reduced time to market, flexible pricing and reduced operational costs.
 
-[Impure Pics on Typeclasses Summary](
-https://impurepics.com/posts/2018-06-17-typeclasses-in-scala.html)
-<img src="https://i.imgur.com/8L0BuEx.png" width="800">
+It’s unlikely for now that serverless will or should be the approach for every system – 
+but watch this space as it matures. For now the best solution is a combination of both 
+architectural approaches to help deliver and take advantage of the benefits the cloud brings to you and your customers.
 
 ---
-
-# Cats Show + Eq Type classes
-
-1. **Show**<br>
-
-```scala
-trait Show[A] {
- def show(value: A): String
-}
-// Instance
-implicit val dateShow: Show[Date] =
-Show.show(date => s"${date.getTime}ms since epoch")
-```
-
-[Details on Show](https://typelevel.org/cats/typeclasses/show.html) <br>
-
-2. **Eq**<br>
-
-```scala
-trait Eq[A] {
- def eqv(a: A, b: A): Boolean
-}
-// Instance
-implicit val dateEq: Eq[Date] =
- Eq.instance[Date]{{date1, date2) =>
-  date1.getTime === date2.getTime
-}
- ```
-
-[Details on Eq](https://typelevel.org/cats/typeclasses/eq.html)
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
