@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>Faas Explained</title>
     <meta charset="utf-8">
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
@@ -21,142 +21,223 @@
 
 class: center, middle
 
-# Serverless (Faas) vs MicroServices (Serveralways)
-
+# Serverless === Faas || MicroServices
 ---
 
 # Agenda
 
-1. What is Serverless Computing(FaaS)?
-2. Serverless Impacts 
-3. Pure Functions
-4. Faas Framework Options   
-5. Key aspects from Dev/App Perspective 
-6. Key aspects from Ops Perspective 
-7. What is MicroServices Architecture
-8. Compare and Contrast
-9. Compare and Contrast (cont)
-10. Summary
+1. What is FaaS?
+2. Demystifying Xaas
+3. Evolution of Software Systems
+4. What is MicroService Architecture
+5. FaaS Impacts
+6. Pure Functions
+7. Faas Framework Options
+8. Key aspects from Dev/App Perspective
+9. Key aspects from Ops Perspective
+10. What is MicroServices Architecture
+11. Compare and Contrast
+12. Compare and Contrast (cont)
+13. FaaS Advantages
+14. FaaS Disadvantages
+15. Use Cases
+16. Existing FaaS Providers
+17. Summary
 ---
 
-# What is Serverless Computing (FaaS)?
+# What is FaaS?
 The phrase “serverless” doesn’t mean servers are no longer involved. It simply means that developers no longer have to think that much about them. -- Ken Fromm
 *Building and Running Applications that do not require server management, and instead run on ephemeral containers *<br>
-<br>
 * **Deployment Model**
  * Applications that are bundled as one or more functions are uploaded to a platform
  * Functions are executed and billed in response to the exact demand needed at the moment
 * **Server Architecture**
   * No need for 'always' on server system
-  * The PaaS starts the instances in 20ms and run for short bursts to satisfy requests and then perish  
-  
+  * The PaaS starts the instances in 20ms and run for short bursts to satisfy requests and then perish
+
+---
+# FaaS continued...
+
+* FaaS simplifies deploying applications to the cloud.
+* With FaaS computing, you install a piece of business logic, a “function,” on a cloud platform.
+* The platform executes the function on demand. So you can run backend code without provisioning or maintaining servers.
+* FaaS goes beyond serverless since it also handles auto-scale:
+ * The cloud platform makes the function available and manages resource allocation for you. If the system needs to accommodate 100 simultaneous requests, it allocates 100 (or more) copies of your service.
+ * If demand drops to two concurrent requests, it destroys the unneeded ones. You pay for the resources your functions use, and only when your functions need them.
+
+
 ---
 
-# Serverless Impacts 
+# Demystifying XaaS
+<img src="https://i.imgur.com/iA8BJra.png" width="800">
 
-  * Application Impact 
+---
+
+# Evolution
+
+<img src="https://i.imgur.com/j7DpRyt.png" width="800">
+
+---
+
+# MicroService Architecture
+Microservice architecture is a set of self-sustained small services,
+running on their own machines using lightweight mechanisms (usually REST APIs’)
+to allow inter-module communication of the underlying application.
+
+---
+
+# Three Phases
+
+<img src="https://i.imgur.com/mkBj61x.png" width="800">
+
+---
+# FaaS Impacts
+
+  * Application Impact
    * Architecture design needs to designed to be ephemeral
       * stateless services, distributed caches
       * no long running services
    * Application code needs to emulate the platform as a service pattern
- 
-  * Operations Impact: Infra Abstraction 
+
+  * Operations Impact: Infra Abstraction
    * Elastic --> Autoscale and No host config
    * On demand --> Boot in 20ms
    * Pay as you go --> fine grained pay-per-use on cloud as in per-call costs
-   * Automatic spin down   
-      
+   * Automatic spin down
+
   **These are typically always cloud managed services aka NoOps**
-   * What Faas gives you?
+   * What FaaS truly gives you in terms of better service to services and customers and the business?
    * Pure functions triggered on demand
-   * Dynamic scalability -- more calls, more instances   
-   * Behavior is explicit and expected
-   * Refactoring is less painful
-   * IaaC abilities -- no more per app infra architectures
-     
+
 ---
 
 # Pure Function
 <img src="https://i.imgur.com/UHZmjKl.png" width="800">
 
 ---
-      
-# Faas Framework 
+
+# FaaS Framework
 * All major cloud providers have products
-  * AWS, GCP, Azure, OVH   
+  * AWS, GCP, Azure, OVH
 
 * Alternatively you can deploy your own Faas framework
   * OpenWhisk, OpenFaaS, OracleFN, Gestalt, Nuclio
-      
+
 * You can leverage on existing CaaS and out value on top of it
-  * Container encapsulation of the function, k8s orchestration    
+  * Container encapsulation of the function, k8s orchestration
 
 ---
 
-# Serverless Key Aspects from a Dev/App Perspective
+# FaaS Key Aspects from a Dev/App Perspective
 Devs gain a greater produtivity by focusing on business valuable code.
-Devs get to design applications with pure functions in mind      
+Devs get to design applications with pure functions in mind
 
 1. **Serverless is an architecture trend**<br>
-   
+
 2. **A Serverless application is a mashup of value-added managed services**<br>
-   
+
 3. **Fits modern arhcitecture stakes**<br>
 Cloud Native applications, 12 factors...
 ---
 
-# Serverless Key Aspects from an Ops Perspective
+# 12 Factor Applications
+<img src="https://i.imgur.com/n428ibb.png" width="800">
+
+---
+
+# FaaS Key Aspects from an Ops Perspective
 Ops gets more efficiency
-Ops gets to offload serveral concerns to platform      
+Ops gets to offload serveral concerns to platform
 
 1. **Autoscale and resilient by design**<br>
-   
+
 2. **Almost NoOps**<br>
-   
+
 3. **Fits Cloud Promise**<br>
 On Demand, Elastic, Pay-per-use
 ---
-      
-# MicroService Architecture
-Microservice architecture is a set of self-sustained small services, 
-running on their own machines using lightweight mechanisms (usually REST APIs’) 
-to allow inter-module communication of the underlying application.      
 
----
-
-# Compare and Contrast
-Pricing is the first differentiator. 
-Serverless is pay-as-you-go, making it an attractive option for applications with infrequent requests. 
-It also reduces operational costs as infrastructure and virtual machines are handled by a service provider
+# Compare and Contrast (MS vs FaaS)
+* Pricing is the first differentiator.
+ * FaaS is pay-as-you-go, making it an attractive option for applications with infrequent requests.
+ * It also reduces operational costs as infrastructure and virtual machines are handled by a service provider
 rather than directly on-premise, IaaS or PaaS.
+ * FaaS services charge per execution time of the function and PaaS services charge per running time of the
+ thread where the server application is running.
+  * PaaS applications are not geared towards bringing entire applications up and down in response to an event, whereas FaaS platforms do exactly this.
 
-Scalability is also outstanding on serverless architecture – 
+* Scalability is also outstanding on FaaS architecture –
 by its nature it can handle spike loads more easily and can be automatically managed quickly and transparently.
-The only caveat is the maximum number of requests that can be processed making it unsuitable for high load systems.      
+
 
 ---
 
 # Compare and Contrast (cont)
-Serverless is more granular than microservices, and provides a much higher degree of functionality. 
-On the flip-side, that also creates much more complexity. It also has a number of other restrictions, 
-such as a limited number of requests and operation duration, and supports fewer programming languages.
-
-The level of granularity you get with serverless can also affect tooling and frameworks. 
-This is because the higher the granularity, the more complicated integration testing becomes, 
+* FaaS is more granular than microservices, and provides a much higher degree of functionality.
+* On the flip-side, that also creates much more complexity. It has a number of other restrictions,
+such as operation duration.
+* The level of granularity you get with FaaS can also affect tooling and frameworks.
+This is because the higher the granularity, the more complicated integration testing becomes,
 making it more difficult to debug, troubleshoot and test.
 
 ---
+# FaaS Advantages
 
-# Summary
-Although microservices still provides a solid approach to service oriented architecture (SOA), 
-serverless is gaining ground in event-based architecture and clearly has advantages in terms of 
-reduced time to market, flexible pricing and reduced operational costs.
-
-It’s unlikely for now that serverless will or should be the approach for every system – 
-but watch this space as it matures. For now the best solution is a combination of both 
-architectural approaches to help deliver and take advantage of the benefits the cloud brings to you and your customers.
+* Fewer developer logistics — server infrastructure management is handled by someone else.
+* More time focused on writing code / app specific logic — higher developer velocity.
+* Inherently scalable. Rather than scaling your entire application you can scale your functions automatically and independently with usage.
+* Never pay for idle resources.
+* Built in availability and fault tolerance.
+* Business logic is necessarily modular and conform to minimal shippable unit sizes.
 
 ---
+
+# FaaS Disadvantages
+
+* Decreased transparency. Someone else is managing your infrastructure so it can be tough to understand the entire system.
+* Potentially tough to debug. There are tools that allow remote debugging and some services (i.e. Azure) provide a mirrored local development environment but there is still a need for improved tooling.
+* Auto-scaling of function calls often means auto-scaling of cost. This can make it tough to gauge your business expenses.
+* You now have a ton of functions deployed and it can be tough to keep track of them. This comes down to a need for better tooling (developmental: scripts, frameworks, diagnostic: step-through debugging, local runtimes, cloud debugging, and visualization: user interfaces, analytics, monitoring).
+* Solutions for caching resources between stateless requests (i.e. DB connections) and recycling network requests are still pending.
+
+---
+
+# Use cases: Web apps, Backends, Data/stream processing(Pipeline), Chatbots, Scheduled tasks, IT Automation
+* Super high volume transactions – Isolate them and scale them
+* Burstable workloads – If you only run something once a day or month, no need to pay for a server 24/7/365
+* Scheduled tasks – They are a perfect way to run a certain piece of code on a schedule
+
+---
+
+# ETL Use case
+<img src="https://i.imgur.com/CYqpLYl.png" width="800">
+
+
+---
+# Existing FaaS providers
+
+* Microsoft/Azure Functions — https://azure.microsoft.com/en-us/services/functions/
+* AWS Lambda Functions — https://aws.amazon.com/lambda/
+* Functions, APIs, Tables
+* Google Cloud Functions / Firebase — https://cloud.google.com/functions/
+* Cloud storage, Cloud pub/sub, HTTPS, Stackdriver logs
+* Tracing & debugging in production
+* Firebase provides realtime DB, analytics, additional event triggers
+* IBM Cloud Functions — https://console.bluemix.net/openwhisk/
+---
+# Summary
+Although microservices still provides a solid approach to service oriented architecture (SOA),
+serverless is gaining ground in event-based architecture and clearly has advantages in terms of
+reduced time to market, flexible pricing and reduced operational costs.<br>
+Initially, FaaS and serverless meant more or less the same thing, but serverless has expanded to mean a larger set of
+architectural patterns and practices that make extensive use of common services in addition to custom business logic
+encoded in FaaS.<br>
+The combination of FaaS and common back-end services (such as databases, messaging, and authentication)
+connected primarily through an event-driven architecture is what provides the best benefits for serverless developers.
+
+For now the best solution is a combination of both
+architectural approaches to help deliver and take advantage of the benefits the cloud brings to you and your customers.
+
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
